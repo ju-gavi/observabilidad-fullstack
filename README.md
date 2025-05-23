@@ -22,8 +22,6 @@ Se despliegan múltiples componentes en Kubernetes para la recopilación y visua
 - Loki para logs
 - Jaeger para trazas distribuidas
 
-![Diagrama del proyecto](diagrama/diagrama.png)
-
 ## Cómo levantar el entorno
 
 3. Ejecutar Terraform para simular la infraestructura:
