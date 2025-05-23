@@ -1,0 +1,17 @@
+- name: Aplicar manifiestos de Kubernetes
+  shell: kubectl apply -f {{ item }} --validate=false
+  loop:
+    - ../manifests/flask-deployment.yaml
+    - ../manifests/flask-service.yaml
+    - ../manifests/grafana-deployment.yaml
+    - ../manifests/jaeger-deployment.yaml
+    - ../manifests/loki-config.yaml
+    - ../manifests/loki-deployment.yaml
+    - ../manifests/loki-service.yaml
+    - ../manifests/otel-config.yaml
+    - ../manifests/otel-deployment.yaml
+    - ../manifests/prometheus-config.yaml
+    - ../manifests/prometheus-deployment.yaml
+  args:
+    chdir: "{{ playbook_dir }}"
+

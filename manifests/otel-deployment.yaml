@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otel-collector
+  template:
+    metadata:
+      labels:
+        app: otel-collector
+    spec:
+      containers:
+      - name: otel-collector
+        image: otel/opentelemetry-collector-contrib:latest
+        args: ["--config=/conf/otel-collector-config.yaml"]
+        volumeMounts:
+        - name: config
+          mountPath: /conf
+        - name: flask-logs           # <-- Añadido para montar logs de flask
+          mountPath: /var/log/flask  # debe coincidir con ruta logs en config y app
+      volumes:
+      - name: config
+        configMap:
+          name: otel-collector-conf
+      - name: flask-logs            # <-- Volumen para compartir logs
+        hostPath:
+          path: /tmp/flask-logs
+          type: DirectoryOrCreate
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-collector
+spec:
+  ports:
+  - name: otlp-http
+    port: 4318
+    targetPort: 4318
+  selector:
+    app: otel-collector

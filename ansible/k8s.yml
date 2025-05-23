@@ -1,0 +1,6 @@
+- name: Despliegue de Kubernetes con Ansible
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  roles:
+    - k8s_deploy

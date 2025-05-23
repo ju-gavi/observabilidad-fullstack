@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-otel-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flask-otel
+  template:
+    metadata:
+      labels:
+        app: flask-otel
+    spec:
+      containers:
+      - name: flask-container
+        image: flask-otel-app:latest
+        imagePullPolicy: Never 
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - name: flask-logs
+          mountPath: /var/log/flask
+      volumes:
+      - name: flask-logs
+        hostPath:
+          path: /tmp/flask-logs
+          type: DirectoryOrCreate
+
